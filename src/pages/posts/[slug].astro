@@ -1,0 +1,74 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, getEntry, render } from "astro:content";
+
+import BlogLayout from "@/layouts/BlogLayout.astro";
+import { Image } from "astro:assets";
+import { Formatter } from "@/utils/formatter";
+
+export const getStaticPaths = (async () => {
+
+    const posts = await getCollection('blog');
+    
+    return posts.map((post) => ({
+        params: { slug: post.id },
+        props: { post },
+    }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const frontmatter = post.data;
+
+const { Content, headings } = await render(post);
+// console.log("🚀 ~ headings:", headings);
+
+const author = (await getEntry('author', frontmatter.author.id))!.data;
+// console.log("🚀 ~ author:", author);
+
+---
+
+<BlogLayout title={frontmatter.title}>
+    <h1 class="big-title">{frontmatter.title}</h1>
+   
+    <div class="flex items-center gap-3 mb-6 ">
+        <Image 
+            class="rounded-full"
+            src={author.avatar}
+            alt={author.name}
+            width="50"
+            height="50"
+        />
+        <div class="flex flex-col gap-1">
+            <a href={`/blog/${frontmatter.author.id}`} class="text-md text-gray-400">{author.name}</a>
+            <span class="text-xs text-gray-200">{Formatter.formatDate(frontmatter.date)}</span>
+        </div>
+    </div>
+
+    <Image
+        transition:name={`image-${frontmatter.title}`}
+        class="object-cover w-full h-62.5 rounded-md my-5"
+        src={frontmatter.image}
+        alt={frontmatter.title}
+        width="600"
+        height="220"
+        quality="mid"
+    />
+
+
+    <!-- Tabla de contenidos -->
+     <h3>Tabla de contenidos</h3>
+     <ol>
+        {headings.map((heading, index) => (
+            <li>
+                <a href={`#${heading.slug}`}>{index + 1} - {heading.text}</a>
+            </li>
+        ))}
+     </ol>
+
+    <!-- Contenido -->
+     <Content />
+
+     <div class="my-20">
+        <a href="#btn-back">Ir arriba</a>
+     </div>
+</BlogLayout>

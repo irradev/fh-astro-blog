@@ -1,0 +1,123 @@
+---
+import { Image, Picture } from "astro:assets";
+import MainLayout from "@/layouts/MainLayout.astro";
+
+import post05img from "@images/post-05.png";
+import post01img from "@images/post-01.png";
+---
+
+<MainLayout title="Images">
+    <h1 class="text-5xl text-white">Images</h1>
+
+    <!-- eager es por defecto -->
+    <h1>Tag img normal</h1>
+    <img
+        loading="eager"
+        src="/assets/images/post-05.png"
+        width="250"
+        height="250"
+    />
+
+    <h1>Componente Image de Astro</h1>
+    <Image src={post05img} width="250" height="250" alt="imagen del post" />
+    <h1>H:500 W:500 styled 250 x 250</h1>
+    <Image
+        src={post05img}
+        style={{ width: "250px", height: "250px" }}
+        width="500"
+        height="500"
+        alt="imagen del post"
+    />
+
+    <div class="flex items-center gap-4">
+        <div>
+            <h1>Quality Low</h1>
+            <Image
+                quality="low"
+                src={post05img}
+                width="350"
+                height="350"
+                alt="imagen del post"
+            />
+        </div>
+
+        <div>
+            <h1>Quality Mid</h1>
+            <Image
+                quality="mid"
+                src={post05img}
+                width="350"
+                height="350"
+                alt="imagen del post"
+            />
+        </div>
+        <div>
+            <h1>Quality High</h1>
+            <Image
+                quality="high"
+                src={post05img}
+                width="350"
+                height="350"
+                alt="imagen del post"
+            />
+        </div>
+        <div>
+            <h1>Quality Max</h1>
+            <Image
+                quality="max"
+                src={post05img}
+                width="350"
+                height="350"
+                alt="imagen del post"
+            />
+        </div>
+    </div>
+
+    <h1>Formatos</h1>
+    <Image 
+        src={post05img}
+        format="avif"
+        width="350"
+        height="350"
+        alt="imagen del post"
+    />
+
+    <h1>Componente Picture de Astro</h1>
+    <!-- widths={[200, 400, 800, post05img.width]}
+    sizes={`(max-width: 360px) 200px, (max-width: 768px) 400px, (max-width: 1024px) 800px, ${post05img.width}px`} -->
+    <Picture
+        src={post05img}
+        formats={["webp", "avig", "jpeg"]}
+        densities={[1.5, 2]}
+        width={post05img.width / 2}
+        alt="imagen del post"
+    />
+    <div style={{ height: "3000px" }}></div>
+    
+    <!-- lazy se carga cuando el recurso aparece en el viewport -->
+     <h1>Tag image</h1>
+    <img
+        loading="lazy"
+        src="/assets/images/post-01.png"
+        width="250"
+        height="250"
+    />
+
+    <h1>Componente Image de Astro</h1>
+    <Image
+        src={post01img}
+        loading="lazy"
+        width="350"
+        height="350"
+        alt="imagen del post"
+    />
+
+
+</MainLayout>
+
+<style>
+    @reference '../../styles/global.css';
+    h1 {
+        @apply text-5xl text-white mt-8 mb-4;
+    }
+</style>

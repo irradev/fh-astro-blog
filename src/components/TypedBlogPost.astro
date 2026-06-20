@@ -1,0 +1,46 @@
+---
+
+import { Formatter } from "@/utils/formatter";
+import { Image } from "astro:assets";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+interface Props {
+    post: CollectionEntry<'blog'>
+}
+
+
+const { post } = Astro.props;
+const frontmatter = post.data;
+const url = `/posts/${post.id}`;
+// console.log("🚀 ~ frontmatter:", frontmatter, url);
+
+// const author = await getCollection('author', ({ id }) => id === frontmatter.author.id);
+// console.log("🚀 ~ author:", author);
+
+---
+
+<div class="lg:flex">
+    <Image
+        transition:name={`image-${frontmatter.title}`}
+        class="object-cover w-full h-56 rounded-lg lg:w-64"
+        src={frontmatter.image}
+        alt={frontmatter.title}
+        width="400"
+        height="500"
+        quality="low"
+        loading="lazy"
+    />
+
+    <div class="flex flex-col justify-between py-6 lg:mx-6">
+        <a
+            href={url}
+            class="text-xl font-semibold hover:underline"
+        >
+            {frontmatter.description}
+        </a>
+
+        <span class="text-sm text-gray-500"
+            >{Formatter.formatDate(frontmatter.date)}</span
+        >
+    </div>
+</div>

@@ -1,0 +1,73 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+// interface Props {
+//     title?: string;
+// }
+
+const { title = "MyBlog", ...rest } = Astro.props;
+console.log("🚀 ~ rest:", rest)
+
+
+const frontmatter = rest.frontmatter;
+// console.log("🚀 ~ rest:", rest)
+
+
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{frontmatter.title}</title>
+
+        <ClientRouter />
+    </head>
+    <body>
+        <a href="/">Regresar</a>
+
+        <main>
+            <slot />
+        </main>
+    </body>
+</html>
+
+<style is:global>
+    @reference '../styles/global.css';
+
+    html {
+        @apply bg-gray-900 px-10;
+    }
+
+    body {
+        @apply mt-10;
+    }
+
+    h1 {
+        @apply text-3xl text-white my-5;
+    }
+
+    h2 {
+        @apply text-2xl text-blue-500 my-5;
+    }
+
+    h3 {
+        @apply text-xl text-white my-5;
+    }
+
+    p {
+        @apply text-slate-200 my-5;
+    }
+
+    a {
+        @apply text-blue-500 hover:underline;
+    }
+
+    main {
+        @apply max-w-5xl m-auto mb-10 px-2 md:px-4 lg:px-0;
+    }
+</style>
