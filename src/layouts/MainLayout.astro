@@ -1,12 +1,12 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-import '../styles/global.css';
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
 
 interface Props {
-    title?: string;
+	title?: string;
 }
 
-const { title = 'PostBlog' } = Astro.props;
+const { title = "PostBlog" } = Astro.props;
 ---
 
 <html lang="en">
@@ -18,11 +18,20 @@ const { title = 'PostBlog' } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 
+		<!-- Enabling RSS feed auto-discovery -->
+		 <!-- https://docs.astro.build/en/recipes/rss/#enabling-rss-feed-auto-discovery -->
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="irra's Blog"
+			href={new URL("rss.xml", Astro.site)}
+		/>
+		
 		<ClientRouter />
 	</head>
 	<body class="bg-gray-900 text-slate-200">
-        <main class="max-w-5xl m-auto mb-10 px-2 md:px-4 lg:px-0">
-            <slot />
-        </main>
-    </body>
+		<main class="max-w-5xl m-auto mb-10 px-2 md:px-4 lg:px-0">
+			<slot />
+		</main>
+	</body>
 </html>
